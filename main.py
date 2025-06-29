@@ -1,3 +1,5 @@
+import time
+
 import pygame
 import random
 
@@ -20,16 +22,21 @@ running = True
 
 clock = pygame.time.Clock()
 
+dt = clock.get_rawtime()
+
 pygame.font.init()
 
 font = pygame.font.SysFont("Comic Sans MS", 30)
 
 ballTimer = 1
 
-maxBalls = 60
+maxBalls = 30
 
+for i in range(0,1280,100):
+    Ball.new(Ball,i,i/20+150,25)
 while running:
-    clock.tick(60)
+    dt = clock.get_time()/1000
+    clock.tick(144)
     screen.fill((0,0,0))
     screen.blit(trail_surf, (0,0))
 
@@ -39,19 +46,21 @@ while running:
             running=False
             exit(0)
 
-    ballTimer+=clock.get_time()/1000
-    if ballTimer>=random.randint(0,4):
+
+    ballTimer+=dt
+    """if ballTimer>=random.randint(1,4):
         if len(Ball.Balls)+1<=maxBalls:
             Ball.new(Ball,random.randint(15,1265),150,random.randint(1,50))
-        ballTimer=0
+        ballTimer=0"""
 
 
-    maxBalls = clock.get_fps()
+
+    #maxBalls = clock.get_fps()
     fps_text = font.render(str(clock.get_fps()), True, (255,255,255))
-    screen.blit(fps_text, (0,0))
+    #screen.blit(fps_text, (0,0))
 
     Ground.update(Ground, screen, width)
-    Ball.update(Ball, screen, trail_surf)
+    Ball.update(Ball, screen, trail_surf, dt, clock.get_fps())
 
 
     pygame.display.update()
