@@ -33,7 +33,7 @@ ballTimer = 1
 maxBalls = 30
 
 for i in range(0,1280,100):
-    Ball.new(Ball,i,i/20+150,25)
+    Ball.new(Ball,i,i/3,25)
 while running:
     dt = clock.get_time()/1000
     clock.tick(144)
@@ -45,6 +45,13 @@ while running:
         if event.type == pygame.QUIT:
             running=False
             exit(0)
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            if event.button == 1:
+                print(event)
+                for obj in Ball.Balls:
+                    obj[4]=0
+                    obj[4]-=(dt*(clock.get_fps()/60))*obj[5]
+                    obj[5]-=dt*100
 
 
     ballTimer+=dt
